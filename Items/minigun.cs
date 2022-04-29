@@ -50,8 +50,8 @@ namespace minigun.Items
                 {
                     firearm.Ammo = 250;
                     firearm.ClearAttachments();
-                    firearm.AddAttachment(AttachmentNameTranslation.Foregrip);
-                    firearm.AddAttachment(AttachmentNameTranslation.MuzzleBrake);
+                    firearm.AddAttachment(AttachmentName.Foregrip);
+                    firearm.AddAttachment(AttachmentName.MuzzleBrake);
                 }
             }
         }
