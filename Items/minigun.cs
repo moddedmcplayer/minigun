@@ -1,11 +1,10 @@
 ﻿using Exiled.API.Features;
+using Exiled.API.Features.Items;
 using Exiled.API.Features.Spawn;
 using Exiled.CustomItems.API.Features;
 using Exiled.Events.EventArgs;
-using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Attachments;
 using InventorySystem.Items.Firearms.BasicMessages;
-using InventorySystem.Items.Firearms.Modules;
 using MEC;
 using UnityEngine;
 
@@ -55,21 +54,19 @@ namespace minigun.Items
                 }
             }
         }
-
+        
         private void OnShot(ShootingEventArgs ev)
         {
-            if (ev.Shooter.CurrentItem is Exiled.API.Features.Items.Firearm firearm && Check(ev.Shooter.CurrentItem))
+            if (ev.Shooter.CurrentItem is Firearm firearm && Check(ev.Shooter.CurrentItem))
             {
                 firearm.Ammo = 250;
-                if (firearm.Base is Firearm firearm2)
+                for(int i = 0; i <= Plugin.Instance.Config.bullets; i++)
                 {
-                    for(int i = 0; i <= Plugin.Instance.Config.bullets; i++)
-                    {
-                        Timing.WaitForSeconds(Plugin.Instance.Config.delay);
-                        ShotMessage msg = default;
-                        firearm2.HitregModule.ClientCalculateHit(out msg);
-                        firearm2.HitregModule.ServerProcessShot(msg);
-                    }
+                    if (!firearm.Base.ActionModule.IsTriggerHeld)
+                        break;
+                    Timing.WaitForSeconds(Plugin.Instance.Config.delay);
+                    firearm.Base.HitregModule.ClientCalculateHit(out var msg);
+                    firearm.Base.HitregModule.ServerProcessShot(msg);
                 }
             }
         }
